@@ -1,0 +1,57 @@
+service: user-crud-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+
+functions:
+  createUser:
+    handler: src/handlers/userHandler.createUser
+    events:
+      - http:
+          path: users
+          method: post
+          cors: true
+
+  getUser:
+    handler: src/handlers/userHandler.getUser
+    events:
+      - http:
+          path: users/{id}
+          method: get
+          cors: true
+
+  updateUser:
+    handler: src/handlers/userHandler.updateUser
+    events:
+      - http:
+          path: users/{id}
+          method: put
+          cors: true
+
+  deleteUser:
+    handler: src/handlers/userHandler.deleteUser
+    events:
+      - http:
+          path: users/{id}
+          method: delete
+          cors: true
+
+  listUsers:
+    handler: src/handlers/userHandler.listUsers
+    events:
+      - http:
+          path: users
+          method: get
+          cors: true
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 4000 
